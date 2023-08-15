@@ -1,0 +1,20 @@
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* This will darken the background */
+    z-index: 1000; /* This ensures the modal is above everything else on the page */
+  }
+  
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    /* Additional styling for the actual content of the modal */
+  }
+  
