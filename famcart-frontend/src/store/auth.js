@@ -26,32 +26,29 @@ export const signUpUser = (user) => async (dispatch) => {
       return newUser;
     } else {
       const errorData = await response.json();
-      console.error('Sign Up Error:', errorData.errors);
+      throw errorData; // Throw the error data received from the server
     }
   } catch (error) {
-    console.error('An error occurred during signUpUser:', error);
+    throw error; // Re-throw the error to be caught in the component
   }
 };
 
+
+
 export const loginUser = (formData) => async (dispatch) => {
   try {
-    // Call your backend to log in the user
     const response = await csrfFetch('http://localhost:3000/auth/sign_in', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
-    });    
+    });
+
     if (response.ok) {
       const userData = await response.json();
-      // Save tokens to local storage
-      console.log(response)
       localStorage.setItem('access-token', response.headers.get('access-token'));
       localStorage.setItem('client', response.headers.get('client'));
       localStorage.setItem('uid', response.headers.get('uid'));
 
-      console.log('access-token:', localStorage.access_token); // Debugging line
-      console.log('client:', localStorage.client); // Debugging line
-      console.log('uid:', localStorage.uid); // Debugging line
       dispatch({
         type: SET_USER,
         user: userData,
@@ -59,12 +56,13 @@ export const loginUser = (formData) => async (dispatch) => {
       return true;
     } else {
       const errorData = await response.json();
-      console.error('Login Error:', errorData.errors);
+      throw new Error(errorData.errors); // Throw an error with the error messages
     }
   } catch (error) {
-    console.error('An error occurred during loginUser:', error);
+    throw error; // Re-throw the error to be caught in the component
   }
 };
+
 
 export const logoutUser = () => async (dispatch) => {
 

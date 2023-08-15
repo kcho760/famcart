@@ -1,12 +1,18 @@
 import './LoginSignupForm.css';
 import { useDispatch } from 'react-redux';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { signUpUser, loginUser } from '../../store/auth.js';
+import React, { useState } from 'react';
 
 // LoginForm.js
 export function LoginForm() {
-  const dispatch = useDispatch(); // Initialize the dispatch function
-  const navigate = useNavigate(); // Initialize the navigate function
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+  const [errors, setErrors] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,47 +21,66 @@ export function LoginForm() {
       password: e.target.password.value,
     };
 
-    const success = await dispatch(loginUser(formData)); // Dispatch the loginUser action
-
-    if (success) {
-      navigate('/dashboard'); // Redirect to the dashboard upon successful login
+    try {
+      const success = await dispatch(loginUser(formData));
+      if (success) {
+        navigate('/dashboard');
+      }
+    } catch (error) {
+      // Handle errors by setting the error state
+      setErrors(error.message);
     }
   };
 
   return (
-    <form className="signup-form-container" onSubmit={handleSubmit}>
-      <label className="signup-form-label" htmlFor="email">Email:</label>
-      <input className="signup-form-input" type="email" id="email" name="email" required />
+    <div>
+      <form className="signup-form-container" onSubmit={handleSubmit}>
+        <label className="signup-form-label" htmlFor="email">Email:</label>
+        <input className="signup-form-input" type="email" id="email" name="email" required />
 
-      <label className="signup-form-label" htmlFor="password">Password:</label>
-      <input className="signup-form-input" type="password" id="password" name="password" required />
+        <label className="signup-form-label" htmlFor="password">Password:</label>
+        <input className="signup-form-input" type="password" id="password" name="password" required />
 
-      <button className="signup-form-button" type="submit">Login</button>
-    </form>
+        <button className="signup-form-button" type="submit">Login</button>
+      </form>
+
+      {errors && <div className="error-message">{errors}</div>}
+    </div>
   );
 }
-  
-  
-  // SignupForm.js
-  export function SignupForm({ onSubmit }) {
-    const dispatch = useDispatch();
-    const navigate = useNavigate(); // Initialize the navigate function
-  
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      const formData = {
-        email: e.target.email.value,
-        password: e.target.password.value,
-        password_confirmation: e.target.passwordConfirmation.value,
-      };
-  
+
+// SignupForm.js
+export function SignupForm() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [errors, setErrors] = useState([]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = {
+      email: e.target.email.value,
+      password: e.target.password.value,
+      password_confirmation: e.target.passwordConfirmation.value,
+    };
+
+    try {
       const newUser = await dispatch(signUpUser(formData));
       if (newUser) {
-        navigate('/dashboard'); // Redirect to the dashboard
+        navigate('/dashboard');
       }
-    };
-  
-    return (
+    } catch (error) {
+      if (error.errors) {
+        const errorMessages = Object.values(error.errors).flat();
+        setErrors(errorMessages);
+      } else {
+        setErrors(['An error occurred. Please check your input and try again.']);
+      }
+    }
+  };
+
+  return (
+    <div>
       <form className="signup-form-container" onSubmit={handleSubmit}>
         <label className="signup-form-label" htmlFor="email">Email:</label>
         <input className="signup-form-input" type="email" id="email" name="email" required />
@@ -68,5 +93,16 @@ export function LoginForm() {
 
         <button className="signup-form-button" type="submit">Sign Up</button>
       </form>
-    );
-  }
+
+      {errors.length > 0 && (
+        <div className="error-message">
+          <ul>
+            {errors.map((errorMessage, index) => (
+              <li key={index}>{errorMessage}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
