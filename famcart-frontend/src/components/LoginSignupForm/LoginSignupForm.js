@@ -29,8 +29,9 @@ export function LoginForm({ onSubmit }) {
       const formData = {
         email: e.target.email.value,
         password: e.target.password.value,
-        password_confirmation: e.target.password_confirmation.value,
+        password_confirmation: e.target.passwordConfirmation.value,
       };
+      console.log(formData);
   
       const newUser = await dispatch(signUpUser(formData));
       if (newUser) {

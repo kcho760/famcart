@@ -8,7 +8,7 @@ gem 'devise'
 gem 'devise_token_auth'
 gem 'omniauth'
 
-gem 'rack-cors'
+gem 'rack-cors', require: 'rack/cors'
 
 gem 'pg'
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"

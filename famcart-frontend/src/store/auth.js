@@ -7,11 +7,13 @@ const SIGN_UP_USER = 'auth/SIGN_UP_USER';
 // Thunks
   export const signUpUser = (user) => async (dispatch) => {
     // Call your backend to sign up the user
-    const response = await fetch('/auth', {
+    console.log(user)
+    const response = await fetch('http://localhost:3000/auth', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user),
     });
+    
     if (response.ok) {
       const newUser = await response.json();
       dispatch({
@@ -20,7 +22,6 @@ const SIGN_UP_USER = 'auth/SIGN_UP_USER';
       });
       return newUser;
     }else {
-        // Handle any errors that occur during registration
         const errorData = await response.json();
         console.error(errorData.errors);
         // You may also want to dispatch an action here to update your state with the error information
