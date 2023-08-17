@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { signUpUser, loginUser } from '../../store/auth.js';
 import React, { useState } from 'react';
 
-// LoginForm.js
 export function LoginForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,10 +26,27 @@ export function LoginForm() {
         navigate('/dashboard');
       }
     } catch (error) {
-      // Handle errors by setting the error state
       setErrors(error.message);
     }
   };
+
+  // Function to handle the demo user login
+  const handleDemoLogin = async () => {
+    const demoUser = {
+      email: 'test1@example.com',
+      password: 'password123'
+    };
+
+    try {
+      const success = await dispatch(loginUser(demoUser));
+      if (success) {
+        navigate('/dashboard');
+      }
+    } catch (error) {
+      setErrors(error.message);
+    }
+  };
+
 
   return (
     <div>
@@ -42,6 +58,7 @@ export function LoginForm() {
         <input className="signup-form-input" type="password" id="password" name="password" required />
 
         <button className="signup-form-button" type="submit">Login</button>
+        <button className="signup-form-button demo-button" type="button" onClick={handleDemoLogin}>Demo User</button>
       </form>
 
       {errors && <div className="error-message">{errors}</div>}

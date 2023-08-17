@@ -5,5 +5,8 @@ class Item < ApplicationRecord
 
   validates :name, presence: true
   validates :unit, presence: true
+
+  def added_by_name
+    user.name
   end
-  
+end

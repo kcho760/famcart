@@ -18,7 +18,7 @@ module Famcart
         origins 'http://localhost:5000' # Replace with your React app's URL
         resource '*',
                  headers: :any,
-                 methods: [:get, :post, :options, :delete],
+                 methods: [:get, :post, :put, :patch, :options, :delete],
                  expose: ['access-token', 'client', 'uid'],
                  max_age: 7200
       end

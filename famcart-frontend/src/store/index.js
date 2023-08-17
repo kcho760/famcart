@@ -1,10 +1,14 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import authReducer from './auth';
+import listsReducer from './list';
+import listItemReducer from './listItem';
 
 // Combine all reducers into a rootReducer
 const rootReducer = combineReducers({
   auth: authReducer,
+  lists: listsReducer,
+  listItems: listItemReducer,
 });
 
 let enhancer;

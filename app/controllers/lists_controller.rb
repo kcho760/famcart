@@ -7,9 +7,12 @@ class ListsController < ApplicationController
     end
   
     def show
-      render json: @list, include: { items: { methods: :added_by_name } }
+      list_with_items = @list.as_json(include: {
+        list_items: { include: { item: { methods: :added_by_name } } }
+      })
+      render json: list_with_items
     end
-  
+    
     def create
       list = List.new(list_params)
       list.user = current_user
