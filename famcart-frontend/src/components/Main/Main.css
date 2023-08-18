@@ -23,11 +23,17 @@
     color: #555;
     background-color: #f1f1f1;
     border-right: 1px solid #ccc;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s ease;
+  }
+
+  .selected-tab {
+    background-color: #1b25b8; /* Or whatever darker color you prefer */
+    color: #fff; /* Optional: Change the text color if necessary */
   }
   
+  
   .tab:hover {
-    background-color: #e5e5e5;
+    background-color: #5f86cf;
   }
   
   .tab:last-child {

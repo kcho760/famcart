@@ -45,7 +45,7 @@ function Main() {
           {lists.map((list) => (
             <div
               key={list.id}
-              className="tab"
+              className={`tab ${selectedList && selectedList.id === list.id ? 'selected-tab' : ''}`}
               onClick={() => handleTabClick(list)}
             >
               {list.name}

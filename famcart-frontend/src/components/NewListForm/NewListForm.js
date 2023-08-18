@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createList } from '../../store/list'; // Import the createList action
 import './NewListForm.css';
 import Modal from '../Modal/Modal'; // Import your Modal component
 
 function NewListForm({ onClose }) {
   const dispatch = useDispatch();
+  const userId = useSelector(state => state.auth.user.id); // Get the user ID from the Redux store
   const [listName, setListName] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (listName.trim() !== '') {
-      dispatch(createList(listName));
+      dispatch(createList(listName, userId)); // Pass the userId to the createList action
       onClose();
     }
   };
