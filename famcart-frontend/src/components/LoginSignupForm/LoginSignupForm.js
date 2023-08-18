@@ -19,35 +19,32 @@ export function LoginForm() {
       email: e.target.email.value,
       password: e.target.password.value,
     };
-
+  
     try {
-      const success = await dispatch(loginUser(formData));
-      if (success) {
+      const user = await dispatch(loginUser(formData)); // loginUser should return the user's data
+      if (user) {
+        console.log('User object:', user);
         navigate('/dashboard');
       }
     } catch (error) {
       setErrors(error.message);
     }
   };
-
-  // Function to handle the demo user login
+  
   const handleDemoLogin = async () => {
     const demoUser = {
-      email: 'test1@example.com',
-      password: 'password123'
+      email: 'test1@gmail.com',
+      password: 'kevinc13'
     };
-
     try {
-      const success = await dispatch(loginUser(demoUser));
-      if (success) {
-        navigate('/dashboard');
-      }
+      await dispatch(loginUser(demoUser)); // loginUser should return the user's data
+      navigate('/dashboard');
     } catch (error) {
       setErrors(error.message);
     }
+    
   };
-
-
+  
   return (
     <div>
       <form className="signup-form-container" onSubmit={handleSubmit}>
@@ -80,10 +77,11 @@ export function SignupForm() {
       password: e.target.password.value,
       password_confirmation: e.target.passwordConfirmation.value,
     };
-
+  
     try {
-      const newUser = await dispatch(signUpUser(formData));
+      const newUser = await dispatch(signUpUser(formData)); // signUpUser should return the new user's data
       if (newUser) {
+        localStorage.setItem('user', JSON.stringify(newUser)); // Save user data to local storage
         navigate('/dashboard');
       }
     } catch (error) {
@@ -95,6 +93,7 @@ export function SignupForm() {
       }
     }
   };
+  
 
   return (
     <div>

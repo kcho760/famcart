@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux'; // Import Provider
-import configureStore from './store'; // Import your store configuration
-import App from './App'; // Import your main component
+import { Provider, useDispatch } from 'react-redux';
+import configureStore from './store';
+import { loadUserFromLocalStorage } from './store/auth'; // Import the action
+import App from './App';
 import './index.css';
 
-const store = configureStore(); // Create the Redux store
+const store = configureStore();
+
+function AppWrapper() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadUserFromLocalStorage());
+  }, [dispatch]);
+
+  return <App />;
+}
 
 ReactDOM.render(
-  <Provider store={store}> {/* Wrap your app with Provider and pass the store */}
-    <App />
+  <Provider store={store}>
+    <AppWrapper />
   </Provider>,
   document.getElementById('root')
 );

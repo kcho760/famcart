@@ -1,4 +1,6 @@
 class ListsController < ApplicationController
+  include DeviseTokenAuth::Concerns::SetUserByToken
+
     before_action :set_list, only: [:show, :update, :destroy]
   
     def index
@@ -15,15 +17,18 @@ class ListsController < ApplicationController
     
     def create
       list = List.new(list_params)
-      list.user = current_user
-  
+
+      puts "Received parameters: #{list_params.inspect}" # Log the received parameters
+    
       if list.save
         render json: list, status: :created
       else
+        puts "List errors: #{list.errors.full_messages}" # Log any model validation errors
         render json: list.errors, status: :unprocessable_entity
       end
     end
-  
+    
+    
     def update
       if @list.update(list_params)
         render json: @list
@@ -43,7 +48,8 @@ class ListsController < ApplicationController
     end
   
     def list_params
-      params.require(:list).permit(:name, :date_created, :status, :notes)
+      params.require(:list).permit(:name, :date_created, :status, :notes, :user_id)
     end
+
   end
   

@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { logoutUser } from '../../store/auth'; // Import the logoutUser action
-import { useNavigate } from 'react-router-dom'; 
+import { logoutUser } from '../../store/auth';
+import { useNavigate } from 'react-router-dom';
 import ListDetails from '../ListDetails/ListDetails';
 import { fetchLists, fetchList } from '../../store/list';
+import Modal from '../Modal/Modal';
+import NewListForm from '../NewListForm/NewListForm';
 import './Main.css';
 
 function Main() {
-  const dispatch = useDispatch(); // Initialize the dispatch function
-  const navigate = useNavigate(); // Initialize the navigate function
-  const lists = useSelector(state => state.lists.all); // Select lists from Redux state
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const lists = useSelector((state) => state.lists.all);
   const [selectedList, setSelectedList] = useState(null);
+  const [showNewListModal, setShowNewListModal] = useState(false);
 
-  // Function to handle the logout action
   const handleLogout = async () => {
     const success = await dispatch(logoutUser());
     if (success === true) {
@@ -20,16 +22,18 @@ function Main() {
     }
   };
 
-  // Fetch the lists from your API
   useEffect(() => {
-    dispatch(fetchLists()); // Dispatch the fetchLists action
+    dispatch(fetchLists());
   }, [dispatch]);
 
   const handleTabClick = (list) => {
-    dispatch(fetchList(list.id)); // Fetch the specific list
-    setSelectedList(list); // Set the clicked list as the selected list
+    dispatch(fetchList(list.id));
+    setSelectedList(list);
   };
-  
+
+  const handleAddListClick = () => {
+    setShowNewListModal(true);
+  };
 
   return (
     <div>
@@ -39,15 +43,25 @@ function Main() {
       <div className="main-container">
         <div className="tabs-container">
           {lists.map((list) => (
-            <div key={list.id} className="tab" onClick={() => handleTabClick(list)}>
+            <div
+              key={list.id}
+              className="tab"
+              onClick={() => handleTabClick(list)}
+            >
               {list.name}
             </div>
           ))}
+          <div className="tab" onClick={handleAddListClick}>
+            +
+          </div>
         </div>
         <div className="list-container">
           {selectedList && <ListDetails list={selectedList} />}
         </div>
       </div>
+      <Modal show={showNewListModal} onClose={() => setShowNewListModal(false)}>
+        <NewListForm onClose={() => setShowNewListModal(false)} />
+      </Modal>
     </div>
   );
 }

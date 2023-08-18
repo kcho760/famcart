@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateListItemCheckedStatus } from '../../store/listItem'; // Import the thunk function
+import { updateListItemCheckedStatus } from '../../store/list'; // Import the thunk function
 import './ListDetails.css';
 
 function formatDate(dateString) {
@@ -12,16 +12,13 @@ function ListDetails() {
   const currentList = useSelector(state => state.lists.currentList);
   const dispatch = useDispatch();
 
-  const handleCheckboxChange = (itemId, checked) => {
-    dispatch(updateListItemCheckedStatus(itemId, checked));
+  const handleCheckboxChange = (listId, itemId, checked) => {
+    dispatch(updateListItemCheckedStatus(listId, itemId, checked));
   };
 
-  // Create a dependency array by extracting the checked properties from currentList.items
-  const checkedStatuses = currentList?.items?.map(item => item.checked) || [];
+  const checkedStatuses = currentList?.list_items?.map(item => item.checked) || [];
 
-  // This useEffect will cause the component to rerender when any of the checked statuses changes
   useEffect(() => {
-    // You can include additional logic here if needed
   }, [checkedStatuses]);
 
   if (!currentList) {
@@ -43,22 +40,27 @@ function ListDetails() {
           </tr>
         </thead>
         <tbody>
-          {currentList.list_items.map((listItem) => (
+        {currentList.list_items.map((listItem) => {
+          const correspondingItem = currentList.items.find(item => item.id === listItem.item_id);
+
+          return (
             <tr key={listItem.id}>
               <td>
                 <input
                   type="checkbox"
                   checked={listItem.checked}
-                  onChange={() => handleCheckboxChange(listItem.id, !listItem.checked)}
+                  onChange={() => handleCheckboxChange(currentList.id, listItem.id, !listItem.checked)}
                 />
               </td>
-              <td>{listItem.item.name}</td>
+              <td>{correspondingItem?.item.name}</td>
               <td>{listItem.quantity}</td>
-              <td>{listItem.item.unit}</td>
+              <td>{correspondingItem?.item.unit}</td>
               <td>{formatDate(listItem.created_at)}</td>
-              <td>{listItem.item.added_by_name}</td>
+              <td>{correspondingItem?.item.added_by_name}</td>
             </tr>
-          ))}
+          );
+        })}
+
         </tbody>
       </table>
     </div>

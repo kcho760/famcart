@@ -44,14 +44,18 @@ export const loginUser = (formData) => async (dispatch) => {
     });
 
     if (response.ok) {
-      const userData = await response.json();
+      const userDataResponse = await response.json();
+      const userData = userDataResponse.data; // Extract the actual user data from the response
+      console.log(userData)
+    
+      localStorage.setItem('user', JSON.stringify(userData));
       localStorage.setItem('access-token', response.headers.get('access-token'));
       localStorage.setItem('client', response.headers.get('client'));
       localStorage.setItem('uid', response.headers.get('uid'));
 
       dispatch({
         type: SET_USER,
-        user: userData,
+        payload: userData,
       });
       return true;
     } else {
@@ -98,10 +102,29 @@ export const logoutUser = () => async (dispatch) => {
   }
 };
 
+export const loadUserFromLocalStorage = () => {
+  return (dispatch) => {
+    const userString = localStorage.getItem('user');
+    const user = userString ? JSON.parse(userString) : null;
+
+    if (user && typeof user === 'object') { // Check if user is an object
+      dispatch({
+        type: 'auth/SET_USER',
+        payload: user
+      });
+    } else {
+      console.error("User data in local storage is in incorrect format:", userString);
+    }
+  };
+};
+
+
 export const setUser = (user) => ({
   type: SET_USER,
-  user,
+  payload: user, // Use payload here instead of user
 });
+
+
 
 // Initial State
 const initialState = {
@@ -115,9 +138,9 @@ const authReducer = (state = initialState, action) => {
     case SET_USER:
       return {
         ...state,
-        user: action.user,
+        user: action.payload,
       };
-    case LOGOUT_USER: // New case for logout
+    case LOGOUT_USER:
       return {
         ...state,
         user: null,

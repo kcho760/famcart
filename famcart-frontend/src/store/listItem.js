@@ -10,9 +10,9 @@ export const updateListItemCheckedStatusRequest = () => ({
   type: UPDATE_LIST_ITEM_CHECKED_STATUS_REQUEST,
 });
 
-export const updateListItemCheckedStatusSuccess = (itemId, checked) => ({
+export const updateListItemCheckedStatusSuccess = (updatedItem) => ({
   type: UPDATE_LIST_ITEM_CHECKED_STATUS_SUCCESS,
-  payload: { itemId, checked },
+  payload: updatedItem,
 });
 
 export const updateListItemCheckedStatusFailure = (error) => ({
@@ -38,10 +38,7 @@ export const updateListItemCheckedStatus = (itemId, checked) => {
 
       const updatedItem = await response.json();
 
-  dispatch({
-    type: UPDATE_LIST_ITEM_CHECKED_STATUS_SUCCESS,
-    payload: { itemId, checked },
-  });
+      dispatch(updateListItemCheckedStatusSuccess(updatedItem));
     } catch (error) {
       dispatch(updateListItemCheckedStatusFailure(error.toString()));
     }
@@ -50,7 +47,6 @@ export const updateListItemCheckedStatus = (itemId, checked) => {
 
 // Reducer
 const initialState = {
-  loading: false,
   currentList: {
     items: [],
   },
@@ -58,6 +54,7 @@ const initialState = {
 };
 
 export const listItemReducer = (state = initialState, action) => {
+
   switch (action.type) {
     case UPDATE_LIST_ITEM_CHECKED_STATUS_REQUEST:
       return {
@@ -65,19 +62,17 @@ export const listItemReducer = (state = initialState, action) => {
         loading: true,
       };
     case UPDATE_LIST_ITEM_CHECKED_STATUS_SUCCESS:
-      console.log("Action payload:", action.payload);
       return {
         ...state,
         loading: false,
         currentList: {
           ...state.currentList,
           items: state.currentList.items.map(item => {
-            if (item.id === action.payload.itemId) {
-              console.log("Updating item:", item);
-              return { ...item, checked: action.payload.checked };
+            if (item.id === action.payload.id) {
+              return action.payload;
             }
             return item;
-          }),            
+          }),
         },
       };
     case UPDATE_LIST_ITEM_CHECKED_STATUS_FAILURE:
@@ -90,6 +85,8 @@ export const listItemReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+
 
 
 export default listItemReducer;
