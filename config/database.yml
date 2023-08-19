@@ -12,5 +12,9 @@ test:
   database: famcart_test
 
 production:
-  <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
+  adapter: postgresql
+  host: dpg-cjg0d8c1ja0c73e9fmc0-a
+  port: 5432
+  database: famcart
+  username: famcart_user
+  password: your_password_here
