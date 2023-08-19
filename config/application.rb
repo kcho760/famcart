@@ -6,6 +6,7 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+config.railties_order = [:all, :main_app]
 module Famcart
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
@@ -15,14 +16,15 @@ module Famcart
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins 'http://localhost:5000' # Replace with your React app's URL
+        origins 'http://localhost:3000', 'http://192.168.1.48:3000'
         resource '*',
-                 headers: :any,
-                 methods: [:get, :post, :put, :patch, :options, :delete],
-                 expose: ['access-token', 'client', 'uid'],
-                 max_age: 7200
+          headers: :any,
+          methods: [:get, :post, :put, :patch, :delete, :options, :head],
+          expose: ['access-token', 'client', 'uid'], # Allow these headers to be exposed to the client
+          credentials: true # This ensures cookies and authentication headers can be sent
       end
     end
+    
 
     # Configuration for the application, engines, and railties goes here.
     #
