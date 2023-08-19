@@ -13,8 +13,8 @@ test:
 
 production:
   adapter: postgresql
-  host: https://famcart-webservice.onrender.com
+  host: famcart-webservice.onrender.com
   port: 5432
-  database: famcart webservice
+  database: famcart
   username: famcart_user
-  password: your_password_here
+  password: iSUIVG2CgSCg9IQ4BtVa0lLYasXDgSLk
