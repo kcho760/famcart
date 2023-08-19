@@ -13,7 +13,7 @@ test:
 
 production:
   adapter: postgresql
-  host: famcart-webservice.onrender.com
+  host: dpg-cjg0d8c1ja0c73e9fmc0-a
   port: 5432
   database: famcart
   username: famcart_user
