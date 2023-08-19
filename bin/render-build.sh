@@ -2,9 +2,12 @@
 set -o errexit
 set -o nounset
 
-# npm run build
+# render-deploy.sh
+
+# Perform any necessary build steps (e.g., npm run build)
 bundle install
-rails db:drop
-rails db:create
+
+# Run database migrations as part of the deployment process
 rails db:migrate
+
 rails db:seed
