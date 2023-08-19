@@ -1,0 +1,8 @@
+services:
+- type: web
+  name: my-rails-app
+  env: ruby
+  build:
+    command: bundle install && bundle exec rake assets:precompile
+  start:
+    command: bundle exec puma -C config/puma.rb
