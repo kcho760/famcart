@@ -31,3 +31,4 @@
 #ignore node_modules
 /node_modules
 /.env
+/config/credentials/production.key
