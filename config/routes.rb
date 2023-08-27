@@ -3,6 +3,6 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   resources :lists do
-    resources :list_items, only: [:update]
+    resources :list_items, only: [:create ,:update]
   end
 end
