@@ -24,6 +24,6 @@ class ListItemsController < ApplicationController
   private
 
   def list_item_params
-    params.require(:list_item).permit(:checked, :name, :other_attributes)
+    params.require(:list_item).permit(:item_name, :quantity, :unit, :user_id)
   end
 end
