@@ -3,7 +3,6 @@ class ItemsController < ApplicationController
   
     def create
       item = Item.new(item_params)
-      item.list_id = params[:list_id]  # Associate the item with the specified list
   
       if item.save
         render json: item, status: :created
@@ -31,7 +30,7 @@ class ItemsController < ApplicationController
     end
   
     def item_params
-      params.require(:item).permit(:name, :unit, :description, :quantity, :notes)
+      params.require(:item).permit(:name, :unit)
     end
   end
   
