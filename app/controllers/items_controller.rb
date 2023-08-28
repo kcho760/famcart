@@ -1,9 +1,10 @@
 class ItemsController < ApplicationController
     before_action :set_item, only: [:update, :destroy]
+    before_action :authenticate_user!
   
     def create
       item = Item.new(item_params)
-  
+      item.user = current_user
       if item.save
         render json: item, status: :created
       else
@@ -30,7 +31,7 @@ class ItemsController < ApplicationController
     end
   
     def item_params
-      params.require(:item).permit(:name, :unit)
-    end
+      params.require(:item).permit(:name, :unit, :user_id)  # Added :user_id
+    end    
   end
   
