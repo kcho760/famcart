@@ -4,7 +4,7 @@ class ItemsController < ApplicationController
   
     def create
       item = Item.new(item_params)
-      item.user = current_user
+      # item.user = current_user
       if item.save
         render json: item, status: :created
       else
