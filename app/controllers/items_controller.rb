@@ -29,6 +29,16 @@ class ItemsController < ApplicationController
         render json: { message: 'Item deleted' }, status: :ok
       end
     end
+
+    def bulk_destroy
+      if params[:ids]
+        Item.where(id: params[:ids]).destroy_all
+        render json: { message: 'Items deleted' }, status: :ok
+      else
+        render json: { message: 'No IDs provided' }, status: :bad_request
+      end
+    end
+    
     
   
     private
