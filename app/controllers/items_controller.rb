@@ -21,8 +21,15 @@ class ItemsController < ApplicationController
     end
   
     def destroy
-      @item.destroy
+      if params[:ids]
+        Item.where(id: params[:ids]).destroy_all
+        render json: { message: 'Items deleted' }, status: :ok
+      else
+        @item.destroy
+        render json: { message: 'Item deleted' }, status: :ok
+      end
     end
+    
   
     private
   
