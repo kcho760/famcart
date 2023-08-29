@@ -8,6 +8,7 @@ class ListItemsController < ApplicationController
     if list_item.save
       render json: list_item, status: :created
     else
+      puts "Validation errors: #{list_item.errors.full_messages.to_sentence}"
       render json: list_item.errors, status: :unprocessable_entity
     end
   end
