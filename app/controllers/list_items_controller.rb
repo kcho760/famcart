@@ -1,6 +1,7 @@
 class ListItemsController < ApplicationController
 
   def create
+    puts "Received list_id: #{list_item_params[:list_id]}"
     list = List.find(list_item_params[:list_id])
     list_item = list.list_items.new(list_item_params)
 
