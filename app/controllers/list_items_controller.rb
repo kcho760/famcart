@@ -1,7 +1,7 @@
 class ListItemsController < ApplicationController
 
   def create
-    list = List.find(params[:list_id])
+    list = List.find(list_item_params[:list_id])
     list_item = list.list_items.new(list_item_params)
 
     if list_item.save
@@ -24,7 +24,7 @@ class ListItemsController < ApplicationController
   private
 
   def list_item_params
-    params.require(:list_item).permit(:quantity, :unit, :user_id, :item_id, :list_id)
+    params.require(:list_item).permit(:quantity, :user_id, :item_id, :list_id)
   end
   
 end
