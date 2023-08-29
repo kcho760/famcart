@@ -8,6 +8,7 @@ set -o nounset
 bundle install
 
 rails db:drop
+rails db:create
 # Run database migrations as part of the deployment process
 rails db:migrate
 
