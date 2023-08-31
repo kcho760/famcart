@@ -44,8 +44,10 @@ class ListsController < ApplicationController
     private
   
     def set_list
+      Rails.logger.info "Params ID: #{params[:id]}"
       @list = List.find(params[:id])
     end
+    
   
     def list_params
       params.require(:list).permit(:name, :date_created, :status, :notes, :user_id)
