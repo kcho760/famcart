@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
-  mount_devise_token_auth_for 'User', at: 'auth'
-
+  mount_devise_token_auth_for 'User', at: 'auth', controllers: {
+    registrations: 'registrations'
+  }
   resources :lists do
     resources :list_items, only: [:create, :update]
   end
