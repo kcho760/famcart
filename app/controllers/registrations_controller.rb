@@ -1,13 +1,17 @@
-Rails.application.routes.draw do
-    mount_devise_token_auth_for 'User', at: 'auth', controllers: {
-      registrations: 'registrations'
-    }
-    resources :lists do
-      resources :list_items, only: [:create, :update]
+# app/controllers/registrations_controller.rb
+
+class RegistrationsController < DeviseTokenAuth::RegistrationsController
+    before_action :configure_sign_up_params, only: :create
+    before_action :configure_account_update_params, only: :update
+  
+    protected
+  
+    def configure_sign_up_params
+      devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
     end
   
-    delete 'items/bulk_delete', to: 'items#bulk_destroy'
-    resources :items, only: [:create, :update, :destroy, :index, :show]
-    resources :list_items, only: [:create] # Add the create action for list_items
+    def configure_account_update_params
+      devise_parameter_sanitizer.permit(:account_update, keys: [:name])
+    end
   end
   
