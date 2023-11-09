@@ -13,8 +13,8 @@ test:
 
 production:
   adapter: postgresql
-  host: dpg-cjg0d8c1ja0c73e9fmc0-a.ohio-postgres.render.com
+  host: dpg-cl6im1q073pc73aiic60-a.ohio-postgres.render.com
   port: 5432
-  database: famcart
+  database: famcart_kwgt
   username: famcart_user
-  password: iSUIVG2CgSCg9IQ4BtVa0lLYasXDgSLk
+  password: wddR0PFocn6Wjv9mfACNrDIDlPFhASvp
